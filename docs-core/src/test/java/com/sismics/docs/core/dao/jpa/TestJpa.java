@@ -5,8 +5,12 @@ import com.sismics.docs.core.dao.UserDao;
 import com.sismics.docs.core.model.jpa.User;
 import com.sismics.docs.core.util.TransactionUtil;
 import com.sismics.docs.core.util.authentication.InternalAuthenticationHandler;
+
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.junit.Assert;
 import org.junit.Test;
+import com.sismics.docs.core.model.jpa.File;
+
 
 /**
  * Tests the persistance layer.
@@ -35,5 +39,28 @@ public class TestJpa extends BaseTransactionalTest {
 
         // Authenticate using the database
         Assert.assertNotNull(new InternalAuthenticationHandler().authenticate("username", "12345678"));
+    }
+    
+    @Test
+    public void testUpdatePassword() throws Exception {
+        // Create a user
+        UserDao userDao = new UserDao();
+        User user = new User();
+        user.setUsername("username1");
+        user.setPassword("oldPassword");
+        user.setEmail("toto@docs.com");
+        user.setRoleId("admin");
+        user.setStorageQuota(10L);
+        String id = userDao.create(user, "me");
+        
+        TransactionUtil.commit();
+
+        // Update the user's password
+        userDao.updatePassword(user, "newPassword");
+        
+        TransactionUtil.commit();
+
+        // Authenticate using the updated password
+        Assert.assertNotNull(new InternalAuthenticationHandler().authenticate("username", "newPassword"));
     }
 }
