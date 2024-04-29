@@ -6,7 +6,7 @@ pipeline {
                 sh 'mvn -B -DskipTests clean package'
             }
         }
-        stage('Static Code Analysis') {
+        stage('pmd') {
             steps {
                 sh 'mvn pmd:pmd'
             }
