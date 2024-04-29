@@ -6,17 +6,23 @@ pipeline {
                 sh 'mvn -B -DskipTests clean package'
             }
         }
-        stage('pmd') {
+        stage('Static Code Analysis') {
             steps {
                 sh 'mvn pmd:pmd'
             }
         }
-    }
-    post {
-        always {
-            archiveArtifacts artifacts: '**/target/site/**', fingerprint: true
-            archiveArtifacts artifacts: '**/target/**/*.jar', fingerprint: true
-            archiveArtifacts artifacts: '**/target/**/*.war', fingerprint: true
+        stage('Generate Javadoc') {
+            steps {
+                sh 'mvn javadoc:javadoc'
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: '**/target/site/**', fingerprint: true
+                    archiveArtifacts artifacts: '**/target/**/*.jar', fingerprint: true
+                    archiveArtifacts artifacts: '**/target/**/*.war', fingerprint: true
+                    archiveArtifacts artifacts: '**/target/apidocs/**', fingerprint: true
+                }
+            }
         }
     }
 }
