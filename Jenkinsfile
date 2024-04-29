@@ -16,7 +16,9 @@ pipeline {
                 sh 'mvn site --fail-never'
             }
         }
-        post {
+        
+    }
+    post {
             always {
                 archiveArtifacts artifacts: '**/target/site/**', fingerprint: true
                 archiveArtifacts artifacts: '**/target/**/*.jar', fingerprint: true
@@ -24,5 +26,4 @@ pipeline {
                 archiveArtifacts artifacts: '**/target/apidocs/**', fingerprint: true
             }
         }
-    }
 }
