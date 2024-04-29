@@ -13,7 +13,7 @@ pipeline {
         }
         stage('Generate Javadoc') {
             steps {
-                sh 'mvn javadoc:javadoc'
+                sh 'mvn site --fail-never'
             }
             post {
                 always {
