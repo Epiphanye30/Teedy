@@ -41,7 +41,7 @@ pipeline {
             stage('Building image') {
             steps{
                 //your command
-                sh 'docker build -t teedy .'
+                sh 'docker build --tag teedy .'
             }
         }
         // Uploading Docker images into Docker Hub
