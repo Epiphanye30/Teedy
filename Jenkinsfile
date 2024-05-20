@@ -56,9 +56,11 @@ pipeline {
         }
         stage('Run containers'){
             steps{
-                sh "docker run -d -p 8080:8080 ${DOCKERHUB_USERNAME}/teedy"
-                sh "docker run -d -p 8081:8081 ${DOCKERHUB_USERNAME}/teedy"
-                sh "docker run -d -p 8082:8082 ${DOCKERHUB_USERNAME}/teedy"
+                withCredentials([usernamePassword(credentialsId: 'dockerhub_credentials', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+                    sh "docker run -d -p 8080:8080 ${DOCKERHUB_USERNAME}/teedy"
+                    sh "docker run -d -p 8081:8081 ${DOCKERHUB_USERNAME}/teedy"
+                    sh "docker run -d -p 8082:8082 ${DOCKERHUB_USERNAME}/teedy"
+                }
             }
         }
     }
