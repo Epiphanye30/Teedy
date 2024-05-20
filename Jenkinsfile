@@ -54,13 +54,11 @@ pipeline {
                 }
             }
         }
-        //Running Docker container
         stage('Run containers'){
             steps{
-                //your command
-                sh 'docker run -d -p 8080:8080 $DOCKERHUB_USERNAME/teedy'
-                sh 'docker run -d -p 8081:8081 $DOCKERHUB_USERNAME/teedy'
-                sh 'docker run -d -p 8082:8082 $DOCKERHUB_USERNAME/teedy'
+                sh "docker run -d -p 8080:8080 ${DOCKERHUB_USERNAME}/teedy"
+                sh "docker run -d -p 8081:8081 ${DOCKERHUB_USERNAME}/teedy"
+                sh "docker run -d -p 8082:8082 ${DOCKERHUB_USERNAME}/teedy"
             }
         }
     }
